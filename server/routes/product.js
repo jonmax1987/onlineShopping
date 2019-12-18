@@ -1,0 +1,339 @@
+var express = require('express');
+var con = require('../modules/DB').getPool();
+var router = express.Router();
+var httpRespons = require('../modules/httpResponse');
+
+
+router.get('/', function (req, res, next) {
+    res.send('respond with a resource');
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* GET category listing. */
+router.get('/category', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT * FROM category`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'category-list';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+
+router.post('/category', (req, res) => {
+    let respons = new httpRespons();
+    let name = req.body.name;
+    con.query(`INSERT INTO category(name) VALUES(?)`, [name], (err, result) => {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'category added successfuly';
+        respons.data = result;
+        res.json(respons);
+    })
+})
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* GET products listing. */
+router.get('/product', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT * FROM product`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'products-list';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+
+
+router.post('/product', (req, res) => {
+    let respons = new httpRespons();
+    let name = req.body.name;
+    let id_category = req.body.id_category
+    let price = req.body.price
+    let img = req.body.img
+    con.query(`INSERT INTO product( name, id_category, price, img) VALUES (?,?,?,?)`, [name, id_category, price, img], (err, result) => {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'product added succefuly';
+        respons.data = result;
+        res.json(respons);
+    })
+})
+
+
+router.put('/product', (req, res) => {
+    let respons = new httpRespons();
+    let name = req.body.name;
+    let id_category = req.body.id_category;
+    let price = req.body.price;
+    let img = req.body.img;
+    let id = req.body.id;
+    con.query(`UPDATE product SET name=?,id_category=?,price=?,img=? WHERE id =?`, [name, id_category, price, img, id], (err, result) => {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'product added succefuly';
+        respons.data = result;
+        res.json(respons);
+    })
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* GET cart  */
+router.get('/cart', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT * FROM cart`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'cart-list';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+
+
+router.post('/cart', (req, res) => {
+    let respons = new httpRespons();
+    let id_user = req.body.id_user;
+    let create_date = req.body.create_date
+    con.query(`INSERT INTO cart( id_user, create_date) VALUES (?,?)`, [id_user, create_date], (err, result) => {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'cart added succefuly';
+        respons.data = result;
+        res.json(respons);
+    })
+})
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* GET Item in the cart */
+router.get('/item', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT * FROM product_cart`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'item-list';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+
+
+router.post('/item', (req, res) => {
+    let respons = new httpRespons();
+    let id_user = req.body.id_user;
+    let id_cart = req.body.id_cart
+    let final_price = req.body.final_price
+    let city = req.body.city
+    let street = req.body.street
+    let deliveri_data = req.body.deliveri_data
+    let digits = req.body.digits;
+    con.query(`INSERT INTO product_cart( id_product,count,price,id_cart ) VALUES(?,?,?,?)`, [id_product, count, price, id_cart], (err, result) => {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'item added successfuly!!!';
+        respons.data = result;
+        res.json(respons);
+    })
+})
+
+
+router.delete('/item', function (req, res, next) {
+    let respons = new httpRespons();
+    id_product = req.body.id_product
+    con.query(`DELETE FROM product_cart WHERE id_product=?`, [id_product], function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'item deleted!!!';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+
+router.delete('/items', function (req, res, next) {
+    let respons = new httpRespons();
+    id_cart = req.body.id_cart
+    con.query(`DELETE FROM product_cart WHERE id_cart=?`, [id_cart], function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'All item deleted!!!';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* GET order  */
+router.get('/order', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT * FROM order_`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'order-list';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+router.post('/order', (req, res) => {
+    let respons = new httpRespons();
+    let id_user = req.body.id_user;
+    let id_cart = req.body.id_cart
+    let final_price = req.body.final_price
+    let city = req.body.city
+    let street = req.body.street
+    let deliveri_data = req.body.deliveri_data
+    let digits = req.body.digits;
+    con.query(`INSERT INTO order_( id_user, id_cart, final_price, city, street, delivery_date, Order_date,4_digits) VALUES(?,?,?,?,?,?,?,?,?)`, [id_user, id_cart, final_price, city, street, deliveri_data, digits], (err, result) => {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = '';
+        respons.data = result;
+        res.json(respons);
+    })
+})
+
+
+
+router.put('/order', (req, res) => {
+    let respons = new httpRespons();
+    let id_user = req.body.id_user;
+    let id_cart = req.body.id_cart;
+    let final_price = req.body.final_price;
+    let city = req.body.city;
+    let street = req.body.street;
+    let delivery_date = req.body.delivery_date;
+    let Order_date = req.body.Order_date;
+    let digits = req.body.digits;
+    let id = req.body.id;
+
+    con.query(`UPDATE order_ SET id_user=?,id_cart=?,final_price=?,city=?,street=?,delivery_date=?,Order_date=?,4_digits WHERE id =?`, [id_user, id_cart, final_price, city, street, delivery_date, Order_date, digits, id], (err, result) => {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'order updated succefuly';
+        respons.data = result;
+        res.json(respons);
+    })
+})
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+module.exports = router;
