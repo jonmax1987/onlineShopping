@@ -8,14 +8,19 @@ import { ProductService } from '../services/product.service';
 })
 export class CategoryComponent implements OnInit {
   category = []
+  product = [];
+
   constructor(private data: ProductService) { }
 
   ngOnInit() {
     this.data.currentCategory();
     this.data.category_as.subscribe((obj) => this.category = obj)
+    this.data.product_as.subscribe((obj) => this.product = obj)
+    this.data.currentProduct('1')
   }
-   click_(){
-     console.log(this.category);
-   } 
+
+  getProduct(id_category) {
+    this.data.currentProduct(id_category)
+  }
 
 }

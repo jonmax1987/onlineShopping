@@ -12,7 +12,8 @@ router.get('/', function (req, res, next) {
 /* GET category listing. */
 router.get('/category', function (req, res, next) {
     let respons = new httpRespons();
-    con.query(`SELECT * FROM category`, function (err, result, fields) {
+  
+    con.query(`SELECT * FROM category `, function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -51,9 +52,10 @@ router.post('/category', (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* GET products listing. */
-router.get('/product', function (req, res, next) {
+router.post('/get_product', function (req, res, next) {
     let respons = new httpRespons();
-    con.query(`SELECT * FROM product`, function (err, result, fields) {
+    let id_category = req.body.id_category
+    con.query(`SELECT * FROM product WHERE id_category = ?`,[id_category], function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -72,7 +74,7 @@ router.get('/product', function (req, res, next) {
 
 
 
-router.post('/product', (req, res) => {
+router.post('/add_product', (req, res) => {
     let respons = new httpRespons();
     let name = req.body.name;
     let id_category = req.body.id_category

@@ -5,8 +5,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col m-1">
-            
+        <div class="col m-1" *ngFor='let obj of product;let i = index'>
+            <div class="card" style="width: 18rem;">
+                <img src={{obj.img}} class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">{{obj.name}}</p>
+                    <p class="card-text">{{obj.price}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
