@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 /* GET category listing. */
 router.get('/category', function (req, res, next) {
     let respons = new httpRespons();
-  
+
     con.query(`SELECT * FROM category `, function (err, result, fields) {
         if (err) {
             respons.success = false;
@@ -55,7 +55,7 @@ router.post('/category', (req, res) => {
 router.post('/get_product', function (req, res, next) {
     let respons = new httpRespons();
     let id_category = req.body.id_category
-    con.query(`SELECT * FROM product WHERE id_category = ?`,[id_category], function (err, result, fields) {
+    con.query(`SELECT * FROM product WHERE id_category = ?`, [id_category], function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -123,9 +123,11 @@ router.put('/product', (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* GET cart  */
-router.get('/cart', function (req, res, next) {
+router.get('/cart/:id', function (req, res, next) {
     let respons = new httpRespons();
-    con.query(`SELECT * FROM cart`, function (err, result, fields) {
+    let id_user = req.query.id_user;
+    let create_date = new Date;
+    con.query(`SELECT * FROM cart WHERE id_user = ?`, [id_user], function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -134,11 +136,39 @@ router.get('/cart', function (req, res, next) {
             res.json(respons);
             return
         }
-        respons.success = true;
-        respons.errore = false;
-        respons.message = 'cart-list';
-        respons.data = result;
-        res.json(respons);
+        if (!result.length > 0) {
+            con.query(`INSERT INTO cart(id_user, create_date) VALUES (?,?)`, [id_user, create_date], function (err, cart) {
+                if (err) {
+                    respons.success = false;
+                    respons.errore = true;
+                    respons.message = 'errore:' + err;
+                    respons.data = null;
+                    res.json(respons);
+                    return
+                }
+                con.query(`SELECT * FROM cart WHERE id_user = ?`, [id_user], function (err, new_cart) {
+                    if (err) {
+                        respons.success = false;
+                        respons.errore = true;
+                        respons.message = 'errore:' + err;
+                        respons.data = null;
+                        res.json(respons);
+                        return
+                    }
+                    respons.success = true;
+                    respons.errore = false;
+                    respons.message = 'create-cart-successfully';
+                    respons.data = new_cart;
+                    res.json(respons);
+                })
+            })
+        } else {
+            respons.success = true;
+            respons.errore = false;
+            respons.message = 'cart exist';
+            respons.data = result;
+            res.json(respons);
+        }
     })
 });
 
@@ -191,13 +221,11 @@ router.get('/item', function (req, res, next) {
 
 router.post('/item', (req, res) => {
     let respons = new httpRespons();
-    let id_user = req.body.id_user;
+    let id_product = req.body.id_product;
+    let count = req.body.count
+    let price = req.body.price
     let id_cart = req.body.id_cart
-    let final_price = req.body.final_price
-    let city = req.body.city
-    let street = req.body.street
-    let deliveri_data = req.body.deliveri_data
-    let digits = req.body.digits;
+  
     con.query(`INSERT INTO product_cart( id_product,count,price,id_cart ) VALUES(?,?,?,?)`, [id_product, count, price, id_cart], (err, result) => {
         if (err) {
             respons.success = false;

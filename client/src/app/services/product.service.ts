@@ -8,8 +8,9 @@ export class ProductService {
 
   constructor() { }
 
+  private id_user = 2
 
-
+  /////////////////////category////////////////////////////////////////////////////
   private category = new BehaviorSubject([]);
   category_as = this.category.asObservable();
 
@@ -24,7 +25,7 @@ export class ProductService {
       }
   }
 
-
+  ////////////////////product/////////////////////////////////////////////
   private product = new BehaviorSubject([]);
   product_as = this.product.asObservable();
 
@@ -42,24 +43,38 @@ export class ProductService {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.message);
         this.product.next(res.data)
       }), (error) => {
         console.log("error:", error);
       }
   }
 
+  /////////////////////cart////////////////////////////////////////////////////////////
+  private cart = new BehaviorSubject([]);
+  cart_as = this.cart.asObservable();
 
-  // private cart = new BehaviorSubject([]);
-  // cart_as = this.cart.asObservable();
 
+  currentCart() {
+    fetch(`http://localhost:3000/product/cart/:id?id_user=${this.id_user}`)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        this.cart.next(res.data[0])
+      }), (error) => {
+        console.log("error:", error);
+      }
+  }
 
+  ////////////////////products cart///////////////////////////////////////////////////////
   private product_cart = new BehaviorSubject([]);
   product_cart_as = this.product_cart.asObservable();
 
-  currentProduct_cart(object) {
+  add_Product_cart(object) {
     let obj = {
-      // id_category: object
+      id_product: object.id_product,
+      count:object.count,
+      price:object.price,
+      id_cart:object.id_cart
     }
     fetch("http://localhost:3000/product/item", {
       method: "POST",
@@ -76,6 +91,34 @@ export class ProductService {
         console.log("error:", error);
       }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////
@@ -117,12 +160,12 @@ export class ProductService {
   };
 
   ///////////////////////////////////////////////
-  private id_user = new BehaviorSubject([]);
-  userid_as = this.id_user.asObservable();
+  // private id_user = new BehaviorSubject([]);
+  // userid_as = this.id_user.asObservable();
 
-  changeUserId(id) {
-    this.id_user.next(id);
-  };
+  // changeUserId(id) {
+  //   this.id_user.next(id);
+  // };
 
   private id_bank = new BehaviorSubject([]);
   bankid_as = this.id_bank.asObservable();
