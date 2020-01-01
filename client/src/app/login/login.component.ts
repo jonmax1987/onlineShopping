@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
-
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +10,7 @@ import { ProductService } from '../services/product.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private data: ProductService) { }
+  constructor(private router: Router, private data: ProductService, private usersData: UsersService) { }
 
   username = "";
   password = "";
@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
       password: this.password
     }
     this.data.changeusername(obj.username)
-    fetch("http://localhost:3000/users/loginjwt", {
-      method: "POST",
+    fetch("http://localhost:3000/users/", {
+      method: "PUT",
       body: JSON.stringify(obj),
       headers: {
         'Content-Type': 'application/json',
@@ -37,9 +37,9 @@ export class LoginComponent implements OnInit {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          localStorage.setItem("token", res.data);
-          this.router.navigate(['/admin']);
-          console.log(res);
+          localStorage.setItem("token", res.data.token);
+          this.usersData.changeIdUser(res.data.id_user[0].id);
+          this.router.navigate(['/main']);
         } else {
           this.alert = false;
           var that = this;

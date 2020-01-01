@@ -22,6 +22,12 @@ app.listen(80, function () {
   console.log('CORS-enabled web server listening on port 80')
 })
 
+// app.use(function (req, res, next) {
+//   console.log('Time:', Date.now())
+//   next()
+// })
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

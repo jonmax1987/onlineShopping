@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
+import { UsersService } from '../services/users.service';
+
 
 @Component({
   selector: 'app-cart',
@@ -8,11 +10,26 @@ import { ProductService } from '../services/product.service';
 })
 export class CartComponent implements OnInit {
   cart
-  constructor(private data: ProductService) { }
+  products_cart
+  id_user
+  total 
+  constructor(private data: ProductService, private usersData: UsersService) { }
 
   ngOnInit() {
-    this.data.currentCart();
+    this.usersData.id_user_as.subscribe((obj) => this.id_user = obj)
     this.data.cart_as.subscribe((obj) => this.cart = obj);
-}
+    this.data.currentCart(this.id_user);
+    this.data.product_cart_as.subscribe((obj) => this.products_cart = obj);
+    this.data.total_as.subscribe((obj) => this.total = obj)
+    var that = this;
+    setTimeout(function () {
+      that.data.get_product_cart();
+      console.log(that.cart);
+    }, 1000);
+  }
+ 
+  deleteItem(item){
+    this.data.deleteItemCart(item.id);
+  }
 
 }

@@ -4,16 +4,13 @@ var router = express.Router();
 var httpRespons = require('../modules/httpResponse');
 
 
-router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* GET category listing. */
 router.get('/category', function (req, res, next) {
     let respons = new httpRespons();
-
-    con.query(`SELECT * FROM category `, function (err, result, fields) {
+    con.query(`SELECT * FROM category`, function (err, result) {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -27,7 +24,8 @@ router.get('/category', function (req, res, next) {
         respons.message = 'category-list';
         respons.data = result;
         res.json(respons);
-    })
+
+    });
 });
 
 
@@ -50,6 +48,26 @@ router.post('/category', (req, res) => {
     })
 })
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* GET products listing. */
+router.get('/get_product', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT * FROM product`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'products-list';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
 
 /* GET products listing. */
 router.post('/get_product', function (req, res, next) {
@@ -123,7 +141,7 @@ router.put('/product', (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* GET cart  */
-router.get('/cart/:id', function (req, res, next) {
+router.get('/cart/:id_user', function (req, res, next) {
     let respons = new httpRespons();
     let id_user = req.query.id_user;
     let create_date = new Date;
@@ -198,9 +216,10 @@ router.post('/cart', (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* GET Item in the cart */
-router.get('/item', function (req, res, next) {
+router.get('/item/:id_cart', function (req, res, next) {
     let respons = new httpRespons();
-    con.query(`SELECT * FROM product_cart`, function (err, result, fields) {
+    let id_cart = req.query.id_cart;
+    con.query(`SELECT * FROM product_cart LEFT JOIN product ON product_cart.id_product = product.id WHERE id_cart = ? `,[id_cart], function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -225,7 +244,7 @@ router.post('/item', (req, res) => {
     let count = req.body.count
     let price = req.body.price
     let id_cart = req.body.id_cart
-  
+
     con.query(`INSERT INTO product_cart( id_product,count,price,id_cart ) VALUES(?,?,?,?)`, [id_product, count, price, id_cart], (err, result) => {
         if (err) {
             respons.success = false;
@@ -234,11 +253,21 @@ router.post('/item', (req, res) => {
             respons.data = null;
             res.json(respons);
         }
-        respons.success = true;
-        respons.errore = false;
-        respons.message = 'item added successfuly!!!';
-        respons.data = result;
-        res.json(respons);
+        con.query(`SELECT * FROM product_cart`, function (err, result, fields) {
+            if (err) {
+                respons.success = false;
+                respons.errore = true;
+                respons.message = 'errore:' + err;
+                respons.data = null;
+                res.json(respons);
+                return
+            }
+            respons.success = true;
+            respons.errore = false;
+            respons.message = 'item added successfuly!!!';
+            respons.data = result;
+            res.json(respons);
+        })
     })
 })
 

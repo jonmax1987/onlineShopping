@@ -1,1 +1,51 @@
-<p>cart works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table table-dark">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                index
+                            </th>
+                            <th>
+                                product
+                            </th>
+                            <th>
+                                count
+                            </th>
+                            <th>
+                                price
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of products_cart; let i = index'>
+                            <td>
+                                {{i+1}}
+                            </td>
+                            <td>
+                                {{item.name}}
+                            </td>
+                            <td>
+                                {{item.count}}
+                            </td>
+                            <td>
+                               price {{item.price}} ₪
+                            </td>
+                            <td>
+                                <button class="btn btn-secondary btn-circle btn-circle-sm m-1" (click)='deleteItem(item)'><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col ">
+            Total: {{total}}₪
+        </div>
+        <div class="col-md-3 btn btn-dark btn-sm">Order</div>
+    </div>
+</div>

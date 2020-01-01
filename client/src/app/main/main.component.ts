@@ -11,46 +11,41 @@ export class MainComponent implements OnInit {
 
   product = [];
   cart
-  count = 0
+  count
+  alert = true;
   constructor(private data: ProductService, private router: Router) { }
 
   ngOnInit() {
     this.data.product_as.subscribe((obj) => this.product = obj);
     this.data.cart_as.subscribe((obj) => this.cart = obj);
-    let tath = this;
-    setTimeout(function () {
-      tath.get_count();
-    }, 1000);
   }
 
-  get_count() {
-    let tath = this
-
-    tath.product.map((obj) => {
-      obj.count = 0
-      console.log(obj);
-    })
-  }
 
   addProductInCart(obj) {
+    if (obj.count < 1) {
+      this.alert = false
+      var that = this;
+      setTimeout(function(){
+        that.alert = true;
+      },3000);
+      return;
+    }
     let object = {
       id_product: obj.id,
-      count: this.count,
+      count: obj.count,
       price: obj.price,
-      id_cart: this.cart.id
+      id_cart: this.cart[0].id
     }
     this.data.add_Product_cart(object);
-    this.cart = 0
+    obj.count = 0
   }
 
   plus(obj) {
     obj.count = obj.count + 1;
-    console.log(obj.count);
   }
   minus(obj) {
     if (this.count >= 0) {
       obj.count = obj.count - 1;
-      console.log(obj.count);
     }
   }
 }
