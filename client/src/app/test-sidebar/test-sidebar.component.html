@@ -1,0 +1,17 @@
+<ng-sidebar-container >
+      <!-- A sidebar -->
+      <ng-sidebar 
+        [(opened)]="_opened"
+        mode="push"
+        autoCollapseWidth=500>
+        <app-cart></app-cart>
+      </ng-sidebar>
+
+      <!-- Page content -->
+      
+      <div ng-sidebar-content class="float-rigth">
+          <button (click)="_toggleSidebar()"><i class="fa fa-bars"></i></button>
+          <!-- <router-outlet></router-outlet> -->
+      </div>
+
+    </ng-sidebar-container>

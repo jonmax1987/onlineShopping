@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,12 @@ import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { CategoryComponent } from './category/category.component';
 import { CartComponent } from './cart/cart.component';
+import { TestSidebarComponent } from './test-sidebar/test-sidebar.component';
+import { SidebarModule } from 'ng-sidebar';
+import { ProductComponent } from './product/product.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { FirstPageComponent } from './first-page/first-page.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -17,14 +24,20 @@ import { CartComponent } from './cart/cart.component';
     LoginComponent,
     MainComponent,
     CategoryComponent,
-    CartComponent
+    CartComponent,
+    TestSidebarComponent,
+    ProductComponent,
+    FirstPageComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    SidebarModule.forRoot(),
+    NgxSpinnerModule
   ],
-  providers: [],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

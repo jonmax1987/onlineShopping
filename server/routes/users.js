@@ -3,14 +3,14 @@ var router = express.Router();
 var con = require('../modules/DB').getPool();
 var httpRespons = require('../modules/httpResponse');
 
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 const jwtKey = 'my_secret'
 const jwtExpirySeconds = 300
 
-
-
 var token = {};
+
+
 ///////////////register/////////////////////
 router.post('/', (req, res, next) => {
   let respons = new httpRespons();

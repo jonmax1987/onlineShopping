@@ -2,14 +2,21 @@ var express = require('express');
 var con = require('../modules/DB').getPool();
 var router = express.Router();
 var httpRespons = require('../modules/httpResponse');
-
+const jwt = require('jsonwebtoken');
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* GET category listing. */
-router.get('/category', function (req, res, next) {
+router.get('/category/:jwt', function (req, res, next) {
     let respons = new httpRespons();
+    var token = req.query.token;
+    console.log('token:',token) // bar
+    jwt.verify(token, 'mySecret', function (err, decoded) {
+        if (err) throw err;
+        console.log(decoded) // bar
+    });
+    // console.log(x);
     con.query(`SELECT * FROM category`, function (err, result) {
         if (err) {
             respons.success = false;
@@ -219,7 +226,7 @@ router.post('/cart', (req, res) => {
 router.get('/item/:id_cart', function (req, res, next) {
     let respons = new httpRespons();
     let id_cart = req.query.id_cart;
-    con.query(`SELECT * FROM product_cart LEFT JOIN product ON product_cart.id_product = product.id WHERE id_cart = ? `,[id_cart], function (err, result, fields) {
+    con.query(`SELECT * FROM product_cart LEFT JOIN product ON product_cart.id_product = product.id WHERE id_cart = ? `, [id_cart], function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;

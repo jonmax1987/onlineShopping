@@ -37,7 +37,11 @@ export class LoginComponent implements OnInit {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
+          let token = res.data.token; 
+          console.log(token);
+          
           localStorage.setItem("token", res.data.token);
+          this.data.setToken(token);
           this.usersData.changeIdUser(res.data.id_user[0].id);
           this.router.navigate(['/main']);
         } else {

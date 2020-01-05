@@ -1,42 +1,8 @@
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <app-cart></app-cart>
-        </div>
-        <div class="col">
-            <div class="row">
-                <div class="col m-1">
-                    <app-category></app-category>
-                    <div [hidden]='alert' class="alert alert-danger">Product quantity must be selected!!!</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4" *ngFor='let obj of product;let i = index'>
-                    <div class="card m-1" style="max-width: 25rem;">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <img src={{obj.img}} class="card-img p-2" alt="...">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <span class="card-text float-right">{{obj.name}}</span>
-                                    <span class="card-text">{{obj.price}}</span>
-                                    <hr />
-                                    <div class="btn btn-info" (click)='addProductInCart(obj)'>Add</div>
-                                    <div class="float-right">
-                                        <button class="btn btn-success btn-circle btn-circle-sm m-1"
-                                            (click)="minus(obj)"><i class="fas fa-minus"></i></button>
-                                        <button class="btnTouchspin bootstrap-touchspin-down" type="button"
-                                            aria-label="הפחת 1">{{obj.count}}</button>
-                                        <button class="btn btn-success btn-circle btn-circle-sm m-1"
-                                            (click)="plus(obj)"><i class="fas fa-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-12">
+            <app-product></app-product>
         </div>
     </div>
 </div>
+

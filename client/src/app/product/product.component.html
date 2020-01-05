@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row">
+        <div [ngClass]="sidebar">
+            <app-test-sidebar></app-test-sidebar>
+        </div>
+        <div [ngClass]="product_Col">
+            <div class="row">
+                <div class="col m-1">
+                    <app-category></app-category>
+                    <div [hidden]='alert' class="alert alert-danger">Product quantity must be selected!!!</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3" *ngFor='let obj of product;let i = index'>
+                    <div class="card m-1 bg-secondary" style="max-width: 25rem;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src={{obj.img}} class="card-img p-2 " alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="card-text float-right">{{obj.name}}</div>
+                                    <br>
+                                    <div class="card-text ">מחיר: {{obj.price}}</div>
+                                    <hr />
+                                    <div [hidden]='obj.add' class="btn btn-info" (click)='addProductInCart(obj)'>הוסף
+                                        לעגלה</div>
+                                    <div class="float-right">
+                                        <button class="btn btn-success btn-circle btn-circle-sm m-1"
+                                            (click)="minus(obj)"><i class="fas fa-minus"></i></button>
+                                        <button class="btnTouchspin bootstrap-touchspin-down" type="button"
+                                            aria-label="הפחת 1">{{obj.count}}</button>
+                                        <button class="btn btn-success btn-circle btn-circle-sm m-1"
+                                            (click)="plus(obj)"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

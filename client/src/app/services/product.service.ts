@@ -8,12 +8,22 @@ export class ProductService {
 
   constructor() { }
 
+/////////////////////jwt///////////////////////////////////////////////////////
+private token = new BehaviorSubject('');
+token_as = this.token.asObservable();
+
+setToken(obj){
+  this.token.next(obj)
+  console.log(this.token.value);
+  
+};
+
   /////////////////////category////////////////////////////////////////////////////
   private category = new BehaviorSubject([]);
   category_as = this.category.asObservable();
 
-  currentCategory() {
-    fetch('http://localhost:3000/product/category')
+  currentCategory(jwt) {
+    fetch(`http://localhost:3000/product/category/:token?token=${jwt}`)
       .then((res) => res.json())
       .then((res) => {
         this.category.next(res.data);
@@ -33,7 +43,8 @@ export class ProductService {
       .then((res) => res.json())
       .then((res) => {
         res.data.map((obj) => {
-          obj.count = 0
+          obj.count = 0;
+          obj.add = true;
         });
         this.all_product.next(res.data)
       }), (error) => {
@@ -53,7 +64,7 @@ export class ProductService {
   /////////////////////get product by category///////////////////////////////
 
 
-  /*change to get and send param*/
+  /*change to 'get' and send param*/
   private product = new BehaviorSubject([]);
   product_as = this.product.asObservable();
 
@@ -73,7 +84,8 @@ export class ProductService {
       .then((res) => res.json())
       .then((res) => {
         res.data.map((obj) => {
-          obj.count = 0
+          obj.count = 0;
+          obj.add = true;
         });
         this.product.next(res.data)
       }), (error) => {

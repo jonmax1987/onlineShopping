@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { UsersService } from '../services/users.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -13,7 +14,7 @@ export class CartComponent implements OnInit {
   products_cart
   id_user
   total 
-  constructor(private data: ProductService, private usersData: UsersService) { }
+  constructor(private data: ProductService, private usersData: UsersService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.usersData.id_user_as.subscribe((obj) => this.id_user = obj)
@@ -30,6 +31,10 @@ export class CartComponent implements OnInit {
  
   deleteItem(item){
     this.data.deleteItemCart(item.id);
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 500);
   }
 
 }
