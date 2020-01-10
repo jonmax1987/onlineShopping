@@ -55,7 +55,9 @@
                 </main>
             </div>
             <footer>
-                <div class="btn btn-info" (click)='click()'>SUBMIT</div>
+                <div class="alert alert-danger" [hidden]='alert'>{{alert_message}}</div>
+                <div class="btn btn-info" (click)='click()'>{{button}}</div>
+                <div class="btn btn-info" (click)='back()' [hidden]='step_2'>back</div>
             </footer>
         </div>
     </div>

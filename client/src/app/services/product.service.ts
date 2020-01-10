@@ -8,15 +8,13 @@ export class ProductService {
 
   constructor() { }
 
-/////////////////////jwt///////////////////////////////////////////////////////
-private token = new BehaviorSubject('');
-token_as = this.token.asObservable();
+  /////////////////////jwt///////////////////////////////////////////////////////
+  private token = new BehaviorSubject('');
+  token_as = this.token.asObservable();
 
-setToken(obj){
-  this.token.next(obj)
-  console.log(this.token.value);
-  
-};
+  setToken(obj) {
+    this.token.next(obj)
+  };
 
   /////////////////////category////////////////////////////////////////////////////
   private category = new BehaviorSubject([]);
@@ -39,7 +37,7 @@ setToken(obj){
 
 
   get_all_product() {
-    fetch("http://localhost:3000/product/get_product")
+    fetch(`http://localhost:3000/product/get_all_product/:token?token=${this.token.value}`)
       .then((res) => res.json())
       .then((res) => {
         res.data.map((obj) => {
@@ -70,17 +68,7 @@ setToken(obj){
 
 
   currentProduct(id_category) {
-    let obj = {
-      id_category: id_category,
-      token: localStorage.getItem('token')
-    }
-    fetch("http://localhost:3000/product/get_product", {
-      method: "POST",
-      body: JSON.stringify(obj),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    fetch(`http://localhost:3000/product/get_product/:id_category?id_category=${id_category}&token=${this.token.value}`)
       .then((res) => res.json())
       .then((res) => {
         res.data.map((obj) => {
@@ -103,11 +91,18 @@ setToken(obj){
 
 
   currentCart(id) {
-    fetch(`http://localhost:3000/product/cart/:id_user?id_user=${id}`)
+    fetch(`http://localhost:3000/product/cart/:id_user?id_user=${id}&token=${this.token.value}`)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.message);
-        console.log(res.data);
+        // let message=
+        if(res.message == 'cart exist'){
+          this.messageChange('cart exist');
+        }
+        if(res.message == 'create-cart-successfully'){
+          this.messageChange(res.message);
+        }
+        // console.log(this.message_cart.value);
+        console.log(res);
         this.cart.next(res.data);
         this.get_product_cart()
       }), (error) => {
@@ -115,12 +110,21 @@ setToken(obj){
       }
   }
 
+  //////////////////////message of cart /////////////////////////////////////////////////////////////////////
+  private message_cart = new BehaviorSubject('');
+  message_cart_as = this.message_cart.asObservable();
+
+  messageChange(message) {
+    this.message_cart.next(message);
+    console.log(this.message_cart.value);
+
+  }
   ////////////////////products cart///////////////////////////////////////////////////////
   private product_cart = new BehaviorSubject([]);
   product_cart_as = this.product_cart.asObservable();
 
   get_product_cart() {
-    fetch(`http://localhost:3000/product/item/:id_cart?id_cart=${this.cart.value[0].id}`)
+    fetch(`http://localhost:3000/product/item/:id_cart?id_cart=${this.cart.value[0].id}&token=${this.token.value}`)
       .then((res) => res.json())
       .then((res) => {
         this.product_cart.next(res.data)
@@ -137,7 +141,8 @@ setToken(obj){
       id_product: object.id_product,
       count: object.count,
       price: object.price,
-      id_cart: object.id_cart
+      id_cart: object.id_cart,
+      token: this.token.value
     }
     fetch("http://localhost:3000/product/item", {
       method: "POST",
@@ -158,7 +163,8 @@ setToken(obj){
 
   deleteItemCart(id_product) {
     let obj = {
-      id_product: id_product
+      id_product: id_product,
+      token: this.token.value
     }
     fetch("http://localhost:3000/product/item", {
       method: "DELETE",
@@ -176,6 +182,29 @@ setToken(obj){
       }
   }
 
+  
+   deleteAllItemCart() {
+    let obj = {
+      id_cart: this.cart.value[0].id,
+      token: this.token.value
+    }
+    console.log(obj.id_cart);
+    
+    fetch("http://localhost:3000/product/allitem", {
+      method: "DELETE",
+      body: JSON.stringify(obj),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        this.get_product_cart();
+      }), (error) => {
+        console.log("error:", error);
+      }
+  }
 
   private total = new BehaviorSubject({});
   total_as = this.total.asObservable();

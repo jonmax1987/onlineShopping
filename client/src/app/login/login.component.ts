@@ -15,10 +15,14 @@ export class LoginComponent implements OnInit {
   username = "";
   password = "";
   alert = true;
+  start_shopping = true;
+  resume_shopping = true;
+  message_cart;
 
   ngOnInit() {
     this.data.changeSign();
     this.data.changeOut();
+    this.data.message_cart_as.subscribe((obj) => this.message_cart = obj);
   }
 
   send() {
@@ -37,24 +41,41 @@ export class LoginComponent implements OnInit {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          let token = res.data.token; 
-          console.log(token);
-          
-          localStorage.setItem("token", res.data.token);
+          let token = res.data.token;
+          this.usersData.changeUser(res.data.id_user[0]);
           this.data.setToken(token);
           this.usersData.changeIdUser(res.data.id_user[0].id);
-          this.router.navigate(['/main']);
+          this.data.currentCart(res.data.id_user[0].id);
+          this.cheeckIfCartExist();
         } else {
           this.alert = false;
           var that = this;
           setTimeout(function () {
-          that.alert = true;
+            that.alert = true;
           }, 5000);
         }
       }), (error) => {
         console.log("error:", error);
       }
   };
+
+  cheeckIfCartExist() {
+    var that = this;
+    setTimeout(function () {
+      if (that.message_cart == 'cart exist') {
+        that.resume_shopping = false;
+      };
+      if (that.message_cart == 'create-cart-successfully') {
+        that.start_shopping = false;
+      };
+    }, 1000);
+
+  };
+
+  startshopp(){
+    this.router.navigate(['/main']);
+  };
+
 
 }
 

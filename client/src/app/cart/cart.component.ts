@@ -37,4 +37,12 @@ export class CartComponent implements OnInit {
     }, 500);
   }
 
+  deleteAll(){
+    this.data.deleteAllItemCart();
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 500);
+  };
+
 }

@@ -16,6 +16,7 @@ import { ProductComponent } from './product/product.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FirstPageComponent } from './first-page/first-page.component';
 import { RegisterComponent } from './register/register.component';
+import { OrderComponent } from './order/order.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { RegisterComponent } from './register/register.component';
     TestSidebarComponent,
     ProductComponent,
     FirstPageComponent,
-    RegisterComponent
+    RegisterComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

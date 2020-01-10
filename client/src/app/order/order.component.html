@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <p>my cart</p>
+            <div class="btn btn-info">back to shop</div>
+            <hr>
+            <app-cart></app-cart>
+        </div>
+        <div class="col-md-6">
+            <span>Order</span>
+            <hr>
+            <div>Shipping Details</div>
+            <hr>
+            <div class="form-group">
+                <input type="text" class="form-control"  name="city" [(ngModel)]='city' (dblclick)="dblclick($event)"/>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="street" [(ngModel)]='street' (dblclick)="dblclick($event)" />
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-control" (dblclick)='dblclick(shipping_date)' />
+            </div>
+            <p>payments:</p>
+            <hr>
+            <div class="form-group">
+                <input type="number" class="form-control" (dblclick)='dblclick(credit_card)' />
+            </div>
+            <div class="btn btn-info">Order</div>
+        </div>
+    </div>
+</div>

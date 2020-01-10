@@ -23,8 +23,6 @@
                                     <br>
                                     <div class="card-text ">מחיר: {{obj.price}}</div>
                                     <hr />
-                                    <div [hidden]='obj.add' class="btn btn-info" (click)='addProductInCart(obj)'>הוסף
-                                        לעגלה</div>
                                     <div class="float-right">
                                         <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                             (click)="minus(obj)"><i class="fas fa-minus"></i></button>
@@ -33,6 +31,8 @@
                                         <button class="btn btn-success btn-circle btn-circle-sm m-1"
                                             (click)="plus(obj)"><i class="fas fa-plus"></i></button>
                                     </div>
+                                    <div [hidden]='obj.add' class="btn btn-info" (click)='addProductInCart(obj)'>הוסף
+                                        לעגלה</div>
                                 </div>
                             </div>
                         </div>
