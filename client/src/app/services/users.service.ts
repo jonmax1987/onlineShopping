@@ -20,12 +20,14 @@ export class UsersService {
   private user = new BehaviorSubject({});
   user_as = this.user.asObservable();
 
-  changeUser(obj) {
+  changeUser(obj) {    
     if (obj.username) {
-      this.user.next(obj);     
+      this.user.next(obj); 
+      console.log(this.user.value);
+
       return
     }
-    this.user.next({ username: 'guest' });
+    this.user.next({username:'guest'});
   }
 
   

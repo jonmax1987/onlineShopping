@@ -17,6 +17,9 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { FirstPageComponent } from './first-page/first-page.component';
 import { RegisterComponent } from './register/register.component';
 import { OrderComponent } from './order/order.component';
+import { AdminComponent } from './admin/admin.component';
+import { MarkPipe } from './mark.pipe';
+import { APIDocComponent } from './api-doc/api-doc.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { OrderComponent } from './order/order.component';
     ProductComponent,
     FirstPageComponent,
     RegisterComponent,
-    OrderComponent
+    OrderComponent,
+    AdminComponent,
+    MarkPipe,
+    APIDocComponent
   ],
   imports: [
     BrowserModule,

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   /////////////////////jwt///////////////////////////////////////////////////////
   private token = new BehaviorSubject('');
@@ -37,6 +38,8 @@ export class ProductService {
 
 
   get_all_product() {
+    console.log(this.token.value);
+    
     fetch(`http://localhost:3000/product/get_all_product/:token?token=${this.token.value}`)
       .then((res) => res.json())
       .then((res) => {
@@ -85,6 +88,9 @@ export class ProductService {
     this.product.next(product);
   }
 
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   /////////////////////cart////////////////////////////////////////////////////////////
   private cart = new BehaviorSubject([]);
   cart_as = this.cart.asObservable();
@@ -95,10 +101,10 @@ export class ProductService {
       .then((res) => res.json())
       .then((res) => {
         // let message=
-        if(res.message == 'cart exist'){
+        if (res.message == 'cart exist') {
           this.messageChange('cart exist');
         }
-        if(res.message == 'create-cart-successfully'){
+        if (res.message == 'create-cart-successfully') {
           this.messageChange(res.message);
         }
         // console.log(this.message_cart.value);
@@ -135,7 +141,7 @@ export class ProductService {
   }
 
 
-
+  //////////////////////add product//////////////////////////
   add_Product_cart(object) {
     let obj = {
       id_product: object.id_product,
@@ -160,7 +166,7 @@ export class ProductService {
       }
   }
 
-
+  ///////////////////delete////////////////////////////
   deleteItemCart(id_product) {
     let obj = {
       id_product: id_product,
@@ -182,14 +188,14 @@ export class ProductService {
       }
   }
 
-  
-   deleteAllItemCart() {
+  /////////////////delete all////////////////////////////// 
+  deleteAllItemCart() {
     let obj = {
       id_cart: this.cart.value[0].id,
       token: this.token.value
     }
     console.log(obj.id_cart);
-    
+
     fetch("http://localhost:3000/product/allitem", {
       method: "DELETE",
       body: JSON.stringify(obj),
@@ -205,7 +211,7 @@ export class ProductService {
         console.log("error:", error);
       }
   }
-
+  //////////////////total////////////////////////////
   private total = new BehaviorSubject({});
   total_as = this.total.asObservable();
 
@@ -217,24 +223,139 @@ export class ProductService {
     })
     this.total.next(total_global)
 
-
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  ////////////////////////////order//////////////////////////////////
+
+  private order = new BehaviorSubject(false);
+  order_as = this.order.asObservable();
+
+
+  changeOrder(bool) {
+    this.order.next(bool);
+  };
+
+  private back = new BehaviorSubject(true);
+  back_as = this.back.asObservable();
+
+
+  changeback(bool) {
+    this.back.next(bool);
+  };
+
+  setOrder(object) {
+    let obj = {
+      city: object.city,
+      street: object.street,
+      id_user: object.id_user,
+      id_cart: this.cart.value[0].id,
+      final_price: this.total.value,
+      deliveri_date: object.deliveri_date,
+      digits: object.digits,
+      token: this.token.value
+    }
+    console.log(obj);
+    fetch("http://localhost:3000/product/order", {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        if (res.message == 'successfuly') {
+          this.setShowModall(true);
+          this.setMessageModall('your by is successfuly!!!');
+          let obj = {
+            id_cart: this.cart.value[0].id
+          }
+          fetch("http://localhost:3000/product/cart", {
+            method: "DELETE",
+            body: JSON.stringify(obj),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res.message);
+            }), (error) => {
+              console.log("error:", error);
+            }
+          // this.router.navigate(['/firstpage'])
+        };
+      }), (error) => {
+        console.log("error:", error);
+        this.setMessageModall("error:" + error);
+      }
+  };
+
+  ////////////////////////Validation on a date///////////////////////////////////////
+  private orders_data = new BehaviorSubject([]);
+  orders_data_as = this.orders_data.asObservable();
+
+  getDataOrder() {
+    fetch(`http://localhost:3000/product/order/?token=${this.token.value}`)
+    .then((res) => res.json())
+    .then((res) => {
+      this.orders_data.next(res.data)
+      console.log(res.data);
+      console.log(this.orders_data);
+    });
+  };
+
+
+  ////////////////////Modall/////////////////////
+  private show_modall = new BehaviorSubject(false);
+  show_modall_as = this.show_modall.asObservable();
+
+  setShowModall(bool_) {
+    this.show_modall.next(bool_)
+   };
 
 
 
+   private message_modall = new BehaviorSubject('');
+   message_modall_as = this.message_modall.asObservable();
+ 
+   setMessageModall(msg) {
+     this.message_modall.next(msg)
+    };
+
+    //////////////////////cheeck in  the bill///////////////////////////
+
+    // private cheeck_bill = new BehaviorSubject([]);
+    // cheeck_bill_as = this.cheeck_bill.asObservable();
+
+    // changeBill(obj){
+    //   this.cheeck_bill.next(obj);
+
+      
+    // };
+    
+    ///////////////////if order page is true pipe...////////////////////////////////////// 
+    orderFun(){
+      if(this.order.value==true){      
+        return true;      
+      }else{
+        return false;
+      }
+    };
 
 
+    private search = new BehaviorSubject([]);
+    search_as = this.search.asObservable();
 
+    changeSearch(obj){
+      this.search.next(obj);
+    };
+    
 
-
-
-
-
-
-
-
-
-
+  // };
 
 
 
@@ -284,13 +405,13 @@ export class ProductService {
     this.sign.next(false);
   };
 
-  ///////////////////////////////////////////////
-  // private id_user = new BehaviorSubject([]);
-  // userid_as = this.id_user.asObservable();
+  /////////////////////////////////////////////
+  private id_user = new BehaviorSubject([]);
+  userid_as = this.id_user.asObservable();
 
-  // changeUserId(id) {
-  //   this.id_user.next(id);
-  // };
+  changeUserId(id) {
+    this.id_user.next(id);
+  };
 
   private id_bank = new BehaviorSubject([]);
   bankid_as = this.id_bank.asObservable();

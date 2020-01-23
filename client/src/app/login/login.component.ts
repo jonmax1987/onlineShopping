@@ -17,12 +17,16 @@ export class LoginComponent implements OnInit {
   alert = true;
   start_shopping = true;
   resume_shopping = true;
+  hide_input = false;
   message_cart;
+  users;
+  message_title='login';
 
   ngOnInit() {
     this.data.changeSign();
     this.data.changeOut();
     this.data.message_cart_as.subscribe((obj) => this.message_cart = obj);
+    this.usersData.user_as.subscribe((obj) => this.users = obj);
   }
 
   send() {
@@ -46,7 +50,15 @@ export class LoginComponent implements OnInit {
           this.data.setToken(token);
           this.usersData.changeIdUser(res.data.id_user[0].id);
           this.data.currentCart(res.data.id_user[0].id);
+          this.data.get_all_product();
+          console.log(this.users);
+          if (this.users.role == 0) {
+            this.router.navigate(['/admin']);
+          }
+          if (this.users.role == 1) {
           this.cheeckIfCartExist();
+          this.hide_input = true;
+          }
         } else {
           this.alert = false;
           var that = this;
@@ -64,15 +76,17 @@ export class LoginComponent implements OnInit {
     setTimeout(function () {
       if (that.message_cart == 'cart exist') {
         that.resume_shopping = false;
+        that.message_title='Continue shopping!!!'
       };
       if (that.message_cart == 'create-cart-successfully') {
         that.start_shopping = false;
+        that.message_title='Welcome back!!!'
       };
     }, 1000);
 
   };
 
-  startshopp(){
+  startshopp() {
     this.router.navigate(['/main']);
   };
 

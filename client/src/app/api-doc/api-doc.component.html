@@ -1,0 +1,25 @@
+<p>api-doc works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table table-dark">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>description</th>
+                            <th>Method + path</th>
+                            <th>Request/Response</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor='let api of object; let index = i'>
+                        <tr>
+                            <td>{{api.description}}</td>
+                            <td>{{api.Method_path}}</td>
+                            <td><div><strong> Request:</strong></div>{{api.Request}}<div><strong>Response:</strong></div>{{api.Response}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

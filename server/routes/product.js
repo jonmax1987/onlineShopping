@@ -114,7 +114,7 @@ router.post('/add_product', (req, res) => {
     let price = req.body.price
     let img = req.body.img
     var token = req.body.token;
-    console.log('token:', token) 
+    console.log('token:', token)
     cheeckJWT(token)
     con.query(`INSERT INTO product( name, id_category, price, img) VALUES (?,?,?,?)`, [name, id_category, price, img], (err, result) => {
         if (err) {
@@ -239,7 +239,25 @@ router.post('/cart', (req, res) => {
     })
 })
 
-
+router.delete('/cart', function (req, res) {
+    let respons = new httpRespons();
+    let id_cart = req.body.id_cart;
+    con.query(`DELETE FROM cart WHERE id = ? `, [id_cart], function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'cart deleted!!!';
+        respons.data = result;
+        res.json(respons);
+    })
+});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////* GET Item in the cart *////////////////////
@@ -386,22 +404,26 @@ router.post('/order', (req, res) => {
     let final_price = req.body.final_price
     let city = req.body.city
     let street = req.body.street
-    let deliveri_data = req.body.deliveri_data
+    let deliveri_date = req.body.deliveri_date
     let digits = req.body.digits;
+    let Order_date = (new Date()).toISOString().split('T')[0];
     var token = req.body.token;
     console.log('token:', token);
     cheeckJWT(token);
-    con.query(`INSERT INTO order_( id_user, id_cart, final_price, city, street, delivery_date, Order_date,4_digits) VALUES(?,?,?,?,?,?,?,?,?)`, [id_user, id_cart, final_price, city, street, deliveri_data, digits], (err, result) => {
+    console.log(req.body);
+
+    con.query(`INSERT INTO order_( id_user, id_cart, final_price, city, street, delivery_date, Order_date,4_digits) VALUES(?,?,?,?,?,?,?,?)`, [id_user, id_cart, final_price, city, street, deliveri_date, Order_date, digits], (err, result) => {
         if (err) {
             respons.success = false;
             respons.errore = true;
             respons.message = 'errore:' + err;
             respons.data = null;
             res.json(respons);
+            return;
         }
         respons.success = true;
         respons.errore = false;
-        respons.message = '';
+        respons.message = 'successfuly';
         respons.data = result;
         res.json(respons);
     })

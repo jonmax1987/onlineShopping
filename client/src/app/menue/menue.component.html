@@ -8,9 +8,9 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto ">
             <li class="nav-item">
-                <a routerLink="/firstpage" routerLinkActive="active" class="nav-link active">Login</a>
+                <a routerLink="/api" routerLinkActive="active" class="nav-link active">API doc</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a routerLink="/main" routerLinkActive="active" class="nav-link active">Main Page</a>
             </li>
             <li class="nav-item">
@@ -18,13 +18,13 @@
             </li>
             <li class="nav-item">
                 <a routerLink="/order" routerLinkActive="active" class="nav-link active">Order</a>
-            </li>
+            </li> -->
         </ul>
         <div class="nav-link" href="#">Hello {{user.username}}</div>
         <div class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" (keyup)='search()'
                 [(ngModel)]='search_'>
         </div>
-        <a class="btn btn-outline-primary" href="#">Sign up/in</a>
+        <a class="btn btn-outline-primary" href="#" (click)='signOut()'>Sign up/in</a>
     </div>
 </nav>
