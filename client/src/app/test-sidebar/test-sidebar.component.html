@@ -1,17 +1,20 @@
-<ng-sidebar-container >
-      <!-- A sidebar -->
-      <ng-sidebar 
-        [(opened)]="_opened"
-        mode="push"
-        autoCollapseWidth=500>
-        <app-cart></app-cart>
-      </ng-sidebar>
-
-      <!-- Page content -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <ng-sidebar-container>
+        <!-- A sidebar -->
+        <ng-sidebar [(opened)]="_opened" mode="push" autoCollapseWidth=500>
+          <app-cart></app-cart>
+        </ng-sidebar>
       
-      <div ng-sidebar-content class="float-rigth">
+        <!-- Page content -->
+      
+        <div ng-sidebar-content class="float-rigth">
           <button (click)="_toggleSidebar()"><i class="fa fa-bars"></i></button>
-          <!-- <router-outlet></router-outlet> -->
-      </div>
-
-    </ng-sidebar-container>
+          <app-product></app-product>
+        </div>
+      
+      </ng-sidebar-container>
+    </div>
+  </div>
+</div>

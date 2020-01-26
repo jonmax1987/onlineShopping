@@ -81,6 +81,7 @@ export class OrderComponent implements OnInit {
         id_user: id,
       }
       this.data.setOrder(obj);
+      return;
     }
     this.alert_credit = false;
   }
@@ -117,12 +118,13 @@ export class OrderComponent implements OnInit {
       alert("Thank You!");
       return true;
     } else {
+      alert("somthing wronge!!!")
       return false;
     }
   }
 
   alertCredit() {
-    this.alert_credit = true; 
+    this.alert_credit = true;
   }
 
   download(filename, text) {

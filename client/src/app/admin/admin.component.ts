@@ -9,9 +9,27 @@ import { ProductService } from '../services/product.service';
 export class AdminComponent implements OnInit {
 
   constructor(private data:ProductService) { }
+ 
+  product;
+  this_product={};
+  name;
+  price;
+  image;
+  id_category;
 
   ngOnInit() {
-    
+    this.data.product_as.subscribe((obj)=>this.product=obj);
+    this.data.admin_product_as.subscribe((obj)=>this.this_product=obj);
   }
+  
+  private _opened: boolean = false;
 
+  private _toggleSidebar() {
+    this._opened = !this._opened;
+  }
+  title = 'sidebar';
+
+  changeProduct(obj){
+    this.data.addProduct(obj);
+  }
 }

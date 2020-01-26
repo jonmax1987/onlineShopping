@@ -267,11 +267,12 @@ export class ProductService {
       .then((res) => res.json())
       .then((res) => {
         console.log(res.message);
-        if (res.message == 'successfuly') {
+        if (res.message == 'order added successfuly') {
           this.setShowModall(true);
-          this.setMessageModall('your by is successfuly!!!');
+          this.setMessageModall('Your purchase was successful!!!');
           let obj = {
-            id_cart: this.cart.value[0].id
+            id_cart: this.cart.value[0].id,
+            token: this.token.value
           }
           fetch("http://localhost:3000/product/cart", {
             method: "DELETE",
@@ -552,4 +553,28 @@ export class ProductService {
 
   };
 
+
+
+  /////////////////////////////////////////////////////////////////////
+  private admin_product = new BehaviorSubject({});
+  admin_product_as = this.admin_product.asObservable();
+
+  addProduct(obj){
+    this.admin_product.next(obj);
+
+    fetch("http://localhost:3000/product/user", {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.message);
+        this.getUserAcount();
+      }), (error) => {
+        console.log("error:", error);
+      }    
+  };
 }

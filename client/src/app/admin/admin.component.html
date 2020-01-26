@@ -1,45 +1,71 @@
 <p>admin works!</p>
-<div class="container">
+
+<div class="container-fluid">
     <div class="row">
-        <div class="col">
-            <div [ngClass]="product_Col">
-                <div class="row">
-                    <div class="col m-1">
-                        <app-category></app-category>
-                        <div [hidden]='alert' class="alert alert-danger">Product quantity must be selected!!!</div>
+        <div class="col-md-12">
+            <ng-sidebar-container>
+                <!-- A sidebar -->
+                <ng-sidebar [(opened)]="_opened" mode="push" autoCollapseWidth=500>
+                    <!-- <app-cart></app-cart> -->
+                    <div class="form-group" >
+                        <input type="text" class="form-control" [(ngModel)]='name' name="name" id="name"
+                            placeholder="Name..." required>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3" *ngFor='let obj of product;let i = index'>
-                        <div class="card m-1 bg-secondary" style="max-width: 25rem;">
-                            <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <img src={{obj.img}} class="card-img p-2 " alt="...">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <div class="card-text float-right">{{obj.name}}</div>
-                                        <br>
-                                        <div class="card-text ">מחיר: {{obj.price}}</div>
-                                        <hr />
-                                        <div class="float-right">
-                                            <button class="btn btn-success btn-circle btn-circle-sm m-1"
-                                                (click)="minus(obj)"><i class="fas fa-minus"></i></button>
-                                            <button class="btnTouchspin bootstrap-touchspin-down" type="button"
-                                                aria-label="הפחת 1">{{obj.count}}</button>
-                                            <button class="btn btn-success btn-circle btn-circle-sm m-1"
-                                                (click)="plus(obj)"><i class="fas fa-plus"></i></button>
+                    <div class="form-group" [hidden]='hide_input'>
+                        <input type="number" class="form-control" [(ngModel)]='price' name="price" id="price"
+                            placeholder="Price..." required>
+                    </div>
+                    <div class="form-group" [hidden]='hide_input'>
+                        <input type="number" class="form-control" [(ngModel)]='id_category' name="id_category" id="id_category"
+                            placeholder="ID Category..." required>
+                    </div>
+                    <div class="form-group" [hidden]='hide_input'>
+                        <input type="text" class="form-control" [(ngModel)]='picther' name="picther" id="picther"
+                            placeholder="Picther..." required>
+                    </div>
+                    <div class="btn-btn-info" (click)=save()>SAVE</div>
+                </ng-sidebar>
+
+                <!-- Page content -->
+
+                <div ng-sidebar-content class="float-rigth">
+                    <button (click)="_toggleSidebar()"><i class="fa fa-bars"></i></button>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div [ngClass]="product_Col">
+                                    <div class="row">
+                                        <div class="col m-1">
+                                            <app-category></app-category>
+                                            <div [hidden]='alert' class="alert alert-danger">Product quantity must be
+                                                selected!!!</div>
                                         </div>
-                                        <div [hidden]='obj.add' class="btn btn-info" (click)='addProductInCart(obj)'>
-                                            הוסף
-                                            לעגלה</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3 btn" *ngFor='let obj of product;let i = index' (click)=changeProduct(obj)>
+                                            <div class="card m-1 bg-secondary" style="max-width: 25rem;">
+                                                <div class="row no-gutters">
+                                                    <div class="col-md-6">
+                                                        <img src={{obj.img}} class="card-img p-2 " alt="...">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card-body">
+                                                            <div class="card-text float-right">{{obj.name}}</div>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-            </div>
+
+            </ng-sidebar-container>
         </div>
     </div>
 </div>

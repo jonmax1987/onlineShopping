@@ -216,32 +216,35 @@ router.get('/cart/:id_user', function (req, res, next) {
 
 
 
-router.post('/cart', (req, res) => {
-    let respons = new httpRespons();
-    let id_user = req.body.id_user;
-    let create_date = req.body.create_date
-    var token = req.body.token;
-    console.log('token:', token) // bar
-    cheeckJWT(token)
-    con.query(`INSERT INTO cart( id_user, create_date) VALUES (?,?)`, [id_user, create_date], (err, result) => {
-        if (err) {
-            respons.success = false;
-            respons.errore = true;
-            respons.message = 'errore:' + err;
-            respons.data = null;
-            res.json(respons);
-        }
-        respons.success = true;
-        respons.errore = false;
-        respons.message = 'cart added succefuly';
-        respons.data = result;
-        res.json(respons);
-    })
-})
+// router.post('/cart', (req, res) => {
+//     let respons = new httpRespons();
+//     let id_user = req.body.id_user;
+//     let create_date = req.body.create_date
+//     var token = req.body.token;
+//     console.log('token:', token) // bar
+//     cheeckJWT(token)
+//     con.query(`INSERT INTO cart( id_user, create_date) VALUES (?,?)`, [id_user, create_date], (err, result) => {
+//         if (err) {
+//             respons.success = false;
+//             respons.errore = true;
+//             respons.message = 'errore:' + err;
+//             respons.data = null;
+//             res.json(respons);
+//         }
+//         respons.success = true;
+//         respons.errore = false;
+//         respons.message = 'cart added succefuly';
+//         respons.data = result;
+//         res.json(respons);
+//     })
+// })
 
 router.delete('/cart', function (req, res) {
     let respons = new httpRespons();
     let id_cart = req.body.id_cart;
+    var token = req.body.token;
+    console.log('token:', token)
+    cheeckJWT(token)
     con.query(`DELETE FROM cart WHERE id = ? `, [id_cart], function (err, result, fields) {
         if (err) {
             respons.success = false;
@@ -423,7 +426,7 @@ router.post('/order', (req, res) => {
         }
         respons.success = true;
         respons.errore = false;
-        respons.message = 'successfuly';
+        respons.message = 'order added successfuly';
         respons.data = result;
         res.json(respons);
     })
@@ -431,37 +434,39 @@ router.post('/order', (req, res) => {
 
 
 
-router.put('/order', (req, res) => {
-    let respons = new httpRespons();
-    let id_user = req.body.id_user;
-    let id_cart = req.body.id_cart;
-    let final_price = req.body.final_price;
-    let city = req.body.city;
-    let street = req.body.street;
-    let delivery_date = req.body.delivery_date;
-    let Order_date = req.body.Order_date;
-    let digits = req.body.digits;
-    let id = req.body.id;
-    var token = req.body.token;
-    console.log('token:', token);
-    cheeckJWT(token);
+// router.put('/order', (req, res) => {
+//     let respons = new httpRespons();
+//     let id_user = req.body.id_user;
+//     let id_cart = req.body.id_cart;
+//     let final_price = req.body.final_price;
+//     let city = req.body.city;
+//     let street = req.body.street;
+//     let delivery_date = req.body.delivery_date;
+//     let Order_date = req.body.Order_date;
+//     let digits = req.body.digits;
+//     let id = req.body.id;
+//     var token = req.body.token;
+//     console.log('token:', token);
+//     cheeckJWT(token);
 
 
-    con.query(`UPDATE order_ SET id_user=?,id_cart=?,final_price=?,city=?,street=?,delivery_date=?,Order_date=?,4_digits WHERE id =?`, [id_user, id_cart, final_price, city, street, delivery_date, Order_date, digits, id], (err, result) => {
-        if (err) {
-            respons.success = false;
-            respons.errore = true;
-            respons.message = 'errore:' + err;
-            respons.data = null;
-            res.json(respons);
-        }
-        respons.success = true;
-        respons.errore = false;
-        respons.message = 'order updated succefuly';
-        respons.data = result;
-        res.json(respons);
-    })
-})
+//     con.query(`UPDATE order_ SET id_user=?,id_cart=?,final_price=?,city=?,street=?,delivery_date=?,Order_date=?,4_digits WHERE id =?`, [id_user, id_cart, final_price, city, street, delivery_date, Order_date, digits, id], (err, result) => {
+//         if (err) {
+//             respons.success = false;
+//             respons.errore = true;
+//             respons.message = 'errore:' + err;
+//             respons.data = null;
+//             res.json(respons);
+//         }
+//         respons.success = true;
+//         respons.errore = false;
+//         respons.message = 'order updated succefuly';
+//         respons.data = result;
+//         res.json(respons);
+//     })
+// })
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
