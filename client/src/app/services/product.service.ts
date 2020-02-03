@@ -39,7 +39,7 @@ export class ProductService {
 
   get_all_product() {
     console.log(this.token.value);
-    
+
     fetch(`http://localhost:3000/product/get_all_product/:token?token=${this.token.value}`)
       .then((res) => res.json())
       .then((res) => {
@@ -301,12 +301,12 @@ export class ProductService {
 
   getDataOrder() {
     fetch(`http://localhost:3000/product/order/?token=${this.token.value}`)
-    .then((res) => res.json())
-    .then((res) => {
-      this.orders_data.next(res.data)
-      console.log(res.data);
-      console.log(this.orders_data);
-    });
+      .then((res) => res.json())
+      .then((res) => {
+        this.orders_data.next(res.data)
+        console.log(res.data);
+        console.log(this.orders_data);
+      });
   };
 
 
@@ -316,48 +316,50 @@ export class ProductService {
 
   setShowModall(bool_) {
     this.show_modall.next(bool_)
-   };
+  };
 
 
 
-   private message_modall = new BehaviorSubject('');
-   message_modall_as = this.message_modall.asObservable();
- 
-   setMessageModall(msg) {
-     this.message_modall.next(msg)
-    };
+  private message_modall = new BehaviorSubject('');
+  message_modall_as = this.message_modall.asObservable();
 
-    //////////////////////cheeck in  the bill///////////////////////////
+  setMessageModall(msg) {
+    this.message_modall.next(msg)
+  };
 
-    // private cheeck_bill = new BehaviorSubject([]);
-    // cheeck_bill_as = this.cheeck_bill.asObservable();
+  //////////////////////cheeck in  the bill///////////////////////////
 
-    // changeBill(obj){
-    //   this.cheeck_bill.next(obj);
+  // private cheeck_bill = new BehaviorSubject([]);
+  // cheeck_bill_as = this.cheeck_bill.asObservable();
 
-      
-    // };
-    
-    ///////////////////if order page is true pipe...////////////////////////////////////// 
-    orderFun(){
-      if(this.order.value==true){      
-        return true;      
-      }else{
-        return false;
-      }
-    };
+  // changeBill(obj){
+  //   this.cheeck_bill.next(obj);
 
-
-    private search = new BehaviorSubject([]);
-    search_as = this.search.asObservable();
-
-    changeSearch(obj){
-      this.search.next(obj);
-    };
-    
 
   // };
 
+  ///////////////////if order page is true pipe...////////////////////////////////////// 
+  orderFun() {
+    if (this.order.value == true) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+
+  private search = new BehaviorSubject([]);
+  search_as = this.search.asObservable();
+
+  changeSearch(obj) {
+    this.search.next(obj);
+  };
+
+
+  // };
+  //////////////////////////////////////////////////////
+  private message = new BehaviorSubject('');
+  message_as = this.message.asObservable();
 
 
 
@@ -556,25 +558,54 @@ export class ProductService {
 
 
   /////////////////////////////////////////////////////////////////////
-  private admin_product = new BehaviorSubject({});
+  private admin_product = new BehaviorSubject({ name: '', price: 0, img: '', id_category: 0, id: 0 });
   admin_product_as = this.admin_product.asObservable();
 
-  addProduct(obj){
-    this.admin_product.next(obj);
 
-    fetch("http://localhost:3000/product/user", {
-      method: "POST",
-      body: JSON.stringify(obj),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res.message);
-        this.getUserAcount();
-      }), (error) => {
-        console.log("error:", error);
-      }    
+  adminProductchange(obj) {
+    this.admin_product.next(obj);
   };
+
+  addProduct(obj) {
+    obj.token = this.token.value;
+
+    if (obj.id == 0) {
+      fetch("http://localhost:3000/product/product", {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          this.currentProduct(1);
+          console.log(res.message);
+          this.message.next(res.message);
+        }), (error) => {
+          console.log("error:", error);
+        }
+    } else {
+      fetch("http://localhost:3000/product/product", {
+        method: "PUT",
+        body: JSON.stringify(obj),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          this.currentProduct(1);
+          console.log(res.message);
+          this.message.next(res.message);
+        }), (error) => {
+          console.log("error:", error);
+        }
+    };
+
+  };
+
+
+
+
 }

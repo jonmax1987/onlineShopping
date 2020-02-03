@@ -20,6 +20,7 @@ import { OrderComponent } from './order/order.component';
 import { AdminComponent } from './admin/admin.component';
 import { MarkPipe } from './mark.pipe';
 import { APIDocComponent } from './api-doc/api-doc.component';
+import { ImgPipe } from './img.pipe';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { APIDocComponent } from './api-doc/api-doc.component';
     OrderComponent,
     AdminComponent,
     MarkPipe,
-    APIDocComponent
+    APIDocComponent,
+    ImgPipe
   ],
   imports: [
     BrowserModule,

@@ -12,12 +12,7 @@
       <!-- Modal body -->
       <div class="modal-body">
         <p>{{message}}</p>
-        <!-- <div class="">
-          <a href="/client/src/app/cart/cart.component.ts" download>
-            <span>להורדת הקבלה</span>
-          </a>
-        </div> -->
-        <div class="btn btn-info" (click)='download(text,cart)'>download</div>
+        <div class="btn btn-info" (click)='downloadPDF()'>download</div>
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
@@ -28,25 +23,6 @@
   </div>
 </div>
 
-<!-- <input type="text" id="filename" value="bill.txt">
-<div id="text-val" >
-  <table>
-    <thead>
-      <tr>
-        <th>name</th>
-        <th>price</th>
-        <th>count</th>
-      </tr>
-    </thead>
-    <tbody *ngFor='let obj of product_cart;let i = index'>
-      <tr>
-        <td>{{obj.name}}</td>
-        <td>{{obj.price}}</td>
-        <td>{{obj.count}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
 
 
 <div class="container">

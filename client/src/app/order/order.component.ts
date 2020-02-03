@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
+import * as jsPDF from 'jspdf';
+
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-order',
@@ -19,6 +22,9 @@ export class OrderComponent implements OnInit {
   delivery_date;
   alert = true;
   alert_credit = true;
+
+  produc_cart;
+  total;
 
   object = {
     city: '',
@@ -40,7 +46,23 @@ export class OrderComponent implements OnInit {
     this.data.message_modall_as.subscribe((msg) => this.message = msg);
     this.data.product_cart_as.subscribe((obj) => this.product_cart = obj);
     this.data.orders_data_as.subscribe((obj) => this.delivery_date = obj);
+    this.data.product_cart_as.subscribe((obj) => this.produc_cart = obj);
+    this.data.total_as.subscribe((obj) => this.total = obj);
   }
+
+
+
+
+  downloadPDF() {
+    const doc = new jsPDF();
+    let row = 15
+    this.produc_cart.map((obj, indx) => {
+      doc.text('product:' + obj.name + 'count:' + JSON.stringify(obj.count) + 'price:' + JSON.stringify(obj.price), 15, row);
+      row = row + 10;
+    })
+    doc.text('total:' + this.total, 15, row)
+    doc.save('pdf.pdf');
+  };
 
   dblclick(atr) {
     if (atr == "date") {

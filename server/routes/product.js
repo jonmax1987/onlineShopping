@@ -107,16 +107,26 @@ router.get('/get_product/:id_category', function (req, res, next) {
 });
 
 
-router.post('/add_product', (req, res) => {
+router.put('/product', (req, res) => {
     let respons = new httpRespons();
     let name = req.body.name;
-    let id_category = req.body.id_category
-    let price = req.body.price
-    let img = req.body.img
+    let id_category = req.body.id_category;
+    let price = req.body.price;
+    let img = req.body.img;
+    let id = req.body.id;
     var token = req.body.token;
-    console.log('token:', token)
-    cheeckJWT(token)
-    con.query(`INSERT INTO product( name, id_category, price, img) VALUES (?,?,?,?)`, [name, id_category, price, img], (err, result) => {
+
+    if (id == 0) {
+        respons.success = false;
+        respons.errore = true;
+        respons.message = "The product is not in the system!!!";
+        respons.data = null;
+        res.json(respons);
+        return;
+    }
+
+    cheeckJWT(token);
+    con.query(`UPDATE product SET name=?,id_category=?,price=?,img=? WHERE id =?`, [name, id_category, price, img, id], (err, result) => {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -133,7 +143,7 @@ router.post('/add_product', (req, res) => {
 })
 
 
-router.put('/product', (req, res) => {
+router.post('/product', (req, res) => {
     let respons = new httpRespons();
     let name = req.body.name;
     let id_category = req.body.id_category;
@@ -142,8 +152,8 @@ router.put('/product', (req, res) => {
     let id = req.body.id;
     var token = req.body.token;
     console.log('token:', token) // bar
-    cheeckJWT(token)
-    con.query(`UPDATE product SET name=?,id_category=?,price=?,img=? WHERE id =?`, [name, id_category, price, img, id], (err, result) => {
+    cheeckJWT(token)   
+    con.query(`INSERT INTO product ( name, id_category, price, img) VALUES (?,?,?,?)`,[name,id_category,price,img], (err, result) => {
         if (err) {
             respons.success = false;
             respons.errore = true;
