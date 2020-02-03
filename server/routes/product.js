@@ -106,6 +106,26 @@ router.get('/get_product/:id_category', function (req, res, next) {
     })
 });
 
+/* GET product count */
+router.get('/productcount', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT COUNT(*) FROM product`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'product-count';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
 
 router.put('/product', (req, res) => {
     let respons = new httpRespons();
@@ -387,13 +407,13 @@ router.delete('/allitem', function (req, res, next) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/* GET order  */
+/* GET order count */
 router.get('/order', function (req, res, next) {
     let respons = new httpRespons();
-    var token = req.query.token;
-    console.log('token:', token)
-    cheeckJWT(token)
-    con.query(`SELECT * FROM order_`, function (err, result, fields) {
+    // var token = req.query.token;
+    // console.log('token:', token)
+    // cheeckJWT(token)
+    con.query(`SELECT COUNT(*) FROM order_`, function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;
@@ -404,7 +424,7 @@ router.get('/order', function (req, res, next) {
         }
         respons.success = true;
         respons.errore = false;
-        respons.message = 'order-list';
+        respons.message = 'order-count';
         respons.data = result;
         res.json(respons);
     })

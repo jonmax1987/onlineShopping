@@ -56,8 +56,9 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/admin']);
           }
           if (this.users.role == 1) {
-          this.cheeckIfCartExist();
-          this.hide_input = true;
+          this.data.cheeckIfCartExist();
+          // cheeckIfCartExist();
+          // this.hide_input = true;
           }
         } else {
           this.alert = false;

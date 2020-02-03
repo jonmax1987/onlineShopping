@@ -1,7 +1,19 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-4"><app-login></app-login></div>
-        <div class="col-md-4"><div class="text-center">component 2</div></div>
-        <div class="col-md-4"><div class="text-center">component 3</div></div>
+        <div class="col-md-4">
+            <app-login></app-login>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center">component 2</div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center">
+                <div>amount of orders on the site: {{order_count}}</div>
+                <div>products available on the site: {{product_count}} </div>
+                <div class="alert alert-secondary" [hidden]='start_shopping'>{{message_title}}</div>
+                <div class="mb-2 ml-2 btn btn-success" [hidden]='start_shopping' (click)='startshopp()'>Start Shopping</div>
+                <div class="mb-2 ml-2 btn btn-success" [hidden]='resume_shopping'(click)='startshopp()'>Resume Shopping</div>
+            </div>
+        </div>
     </div>
 </div>

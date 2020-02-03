@@ -125,6 +125,8 @@ export class ProductService {
     console.log(this.message_cart.value);
 
   }
+
+  
   ////////////////////products cart///////////////////////////////////////////////////////
   private product_cart = new BehaviorSubject([]);
   product_cart_as = this.product_cart.asObservable();
@@ -606,6 +608,28 @@ export class ProductService {
   };
 
 
+  private message_title = new BehaviorSubject('');
+  message_title_as = this.message_title.asObservable();
 
+  private resume_shopping = new BehaviorSubject(true);
+  resume_shopping_as = this.resume_shopping.asObservable();
+
+  private start_shopping = new BehaviorSubject(true);
+  start_shopping_as = this.start_shopping.asObservable();
+
+  cheeckIfCartExist() {
+    var that = this;
+    setTimeout(function () {
+      if (that.message_cart.value == 'cart exist') {
+        that.resume_shopping.next(false);
+        that.message_title.next('Continue shopping!!!') 
+      };
+      if (that.message_cart.value == 'create-cart-successfully') {
+        that.start_shopping.next(false);
+        that.message_title.next('Welcome back!!!');
+      };
+    }, 1000);
+
+  };
 
 }
