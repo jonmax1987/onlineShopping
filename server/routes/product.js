@@ -430,6 +430,28 @@ router.get('/order', function (req, res, next) {
     })
 });
 
+/* GET last order */
+router.get(`/last_order/:id_user?id_user`, function (req, res, next) {
+    let respons = new httpRespons();
+    var id_user = req.query.id_user;
+ 
+    con.query(`SELECT * FROM order_  WHERE id_user = ?`,[id_user], function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'orders';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
 router.post('/order', (req, res) => {
     let respons = new httpRespons();
     let id_user = req.body.id_user;

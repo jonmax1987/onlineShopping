@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
   message_title='login';
 
   ngOnInit() {
-    this.data.changeSign();
-    this.data.changeOut();
+    // this.data.changeSign();
+    // this.data.changeOut();
     this.data.message_cart_as.subscribe((obj) => this.message_cart = obj);
     this.usersData.user_as.subscribe((obj) => this.users = obj);
   }
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       username: this.username,
       password: this.password
     }
-    this.data.changeusername(obj.username)
+   
     fetch("http://localhost:3000/users/", {
       method: "PUT",
       body: JSON.stringify(obj),
@@ -51,14 +51,12 @@ export class LoginComponent implements OnInit {
           this.usersData.changeIdUser(res.data.id_user[0].id);
           this.data.currentCart(res.data.id_user[0].id);
           this.data.get_all_product();
-          console.log(this.users);
+          this.data.changeusername(obj.username);
           if (this.users.role == 0) {
             this.router.navigate(['/admin']);
           }
           if (this.users.role == 1) {
           this.data.cheeckIfCartExist();
-          // cheeckIfCartExist();
-          // this.hide_input = true;
           }
         } else {
           this.alert = false;
@@ -87,9 +85,7 @@ export class LoginComponent implements OnInit {
 
   };
 
-  startshopp() {
-    this.router.navigate(['/main']);
-  };
+ 
 
 
 }

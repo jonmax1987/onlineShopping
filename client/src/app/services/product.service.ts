@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userData: UsersService) { }
 
   /////////////////////jwt///////////////////////////////////////////////////////
   private token = new BehaviorSubject('');
@@ -100,8 +101,9 @@ export class ProductService {
     fetch(`http://localhost:3000/product/cart/:id_user?id_user=${id}&token=${this.token.value}`)
       .then((res) => res.json())
       .then((res) => {
-        // let message=
         if (res.message == 'cart exist') {
+          console.log(res.data);
+
           this.messageChange('cart exist');
         }
         if (res.message == 'create-cart-successfully') {
@@ -126,7 +128,7 @@ export class ProductService {
 
   }
 
-  
+
   ////////////////////products cart///////////////////////////////////////////////////////
   private product_cart = new BehaviorSubject([]);
   product_cart_as = this.product_cart.asObservable();
@@ -286,6 +288,7 @@ export class ProductService {
             .then((res) => res.json())
             .then((res) => {
               console.log(res.message);
+              this.cleanUser();
             }), (error) => {
               console.log("error:", error);
             }
@@ -296,6 +299,17 @@ export class ProductService {
         this.setMessageModall("error:" + error);
       }
   };
+
+  cleanUser() {
+    this.token.next('');
+    this.userData.changeUser({});
+    this.product.next([]);
+    this.message_title.next('');
+    this.resume_shopping.next(true);
+    this.start_shopping.next(true);
+    this.changeusername('guest');
+    this.router.navigate(['/firstpage']);
+  }
 
   ////////////////////////Validation on a date///////////////////////////////////////
   private orders_data = new BehaviorSubject([]);
@@ -328,17 +342,6 @@ export class ProductService {
   setMessageModall(msg) {
     this.message_modall.next(msg)
   };
-
-  //////////////////////cheeck in  the bill///////////////////////////
-
-  // private cheeck_bill = new BehaviorSubject([]);
-  // cheeck_bill_as = this.cheeck_bill.asObservable();
-
-  // changeBill(obj){
-  //   this.cheeck_bill.next(obj);
-
-
-  // };
 
   ///////////////////if order page is true pipe...////////////////////////////////////// 
   orderFun() {
@@ -373,18 +376,18 @@ export class ProductService {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////
-  private signOut = new BehaviorSubject(true);
-  signOut_as = this.signOut.asObservable();
+  // private signOut = new BehaviorSubject(true);
+  // signOut_as = this.signOut.asObservable();
 
 
-  changeOut() {
-    let token = localStorage.getItem('token');
-    if (token) {
-      this.signOut.next(false);
-      return
-    }
-    this.signOut.next(true);
-  };
+  // changeOut() {
+  //   let token = localStorage.getItem('token');
+  //   if (token) {
+  //     this.signOut.next(false);
+  //     return
+  //   }
+  //   this.signOut.next(true);
+  // };
 
   ///////////////////////////////////////
   private username = new BehaviorSubject('guest');
@@ -617,19 +620,49 @@ export class ProductService {
   private start_shopping = new BehaviorSubject(true);
   start_shopping_as = this.start_shopping.asObservable();
 
+  private create_date = new BehaviorSubject('');
+  create_date_as = this.create_date.asObservable();
+
+
   cheeckIfCartExist() {
     var that = this;
     setTimeout(function () {
       if (that.message_cart.value == 'cart exist') {
         that.resume_shopping.next(false);
-        that.message_title.next('Continue shopping!!!') 
+        that.message_title.next('There is an active cart!!!')
+        that.create_date.next(that.cart.value[0].create_date);
       };
       if (that.message_cart.value == 'create-cart-successfully') {
+        that.getLastOrder();
         that.start_shopping.next(false);
         that.message_title.next('Welcome back!!!');
       };
     }, 1000);
 
+  };
+
+  private last_order = new BehaviorSubject({});
+  last_order_as = this.last_order.asObservable();
+
+  getLastOrder() {
+    let id_user;
+    this.userData.user_as.subscribe((num) => id_user = num);
+
+    fetch(`http://localhost:3000/product/last_order/:id_user?id_user=${id_user._id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        let last_order_length = res.data.length - 1;
+        let last_order = res.data[last_order_length];
+
+        if (last_order_length == 0) {
+          this.message_title.next('Welcome new!!!');
+        } else {
+          this.last_order.next(last_order);
+          this.message_title.next('Welcome back!!!');
+        }
+      }), (error) => {
+        console.log("error:", error);
+      }
   };
 
 }

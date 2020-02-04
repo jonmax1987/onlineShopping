@@ -50,9 +50,8 @@ export class MenueComponent implements OnInit {
   };
 
   signOut(){
-    this.usersData.changeUser({ username: 'guest' });
-    this.data.setToken({});
-    this.data.changeusername('guest');
+    // this.usersData.changeUser({ username: 'guest' });
+    this.data.cleanUser();
   };
 
 }

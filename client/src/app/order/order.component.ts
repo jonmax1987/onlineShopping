@@ -149,25 +149,25 @@ export class OrderComponent implements OnInit {
     this.alert_credit = true;
   }
 
-  download(filename, text) {
-    let object = '';
-    this.product_cart.map((obj) => {
-      object += obj.name;
-      object += obj.price;
-    });
-    console.log(object);
+  // download(filename, text) {
+  //   let object = '';
+  //   this.product_cart.map((obj) => {
+  //     object += obj.name;
+  //     object += obj.price;
+  //   });
+  //   console.log(object);
 
-    var element = document.createElement('a');
-    element.style.display = 'none';
+  //   var element = document.createElement('a');
+  //   element.style.display = 'none';
 
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(object));
+  //   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(object));
 
-    element.setAttribute('download', filename);
-    document.body.appendChild(element);
+  //   element.setAttribute('download', filename);
+  //   document.body.appendChild(element);
 
-    element.click();
+  //   element.click();
 
-    document.body.removeChild(element);
+  //   document.body.removeChild(element);
 
-  }
+  // }
 }
