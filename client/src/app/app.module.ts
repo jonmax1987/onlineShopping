@@ -10,7 +10,6 @@ import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { CategoryComponent } from './category/category.component';
 import { CartComponent } from './cart/cart.component';
-import { TestSidebarComponent } from './test-sidebar/test-sidebar.component';
 import { SidebarModule } from 'ng-sidebar';
 import { ProductComponent } from './product/product.component';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -30,7 +29,6 @@ import { ImgPipe } from './img.pipe';
     MainComponent,
     CategoryComponent,
     CartComponent,
-    TestSidebarComponent,
     ProductComponent,
     FirstPageComponent,
     RegisterComponent,

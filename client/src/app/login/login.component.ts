@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private data: ProductService, private usersData: UsersService) { }
 
+  isDisabled = true;
+
   username = "";
   password = "";
   alert = true;

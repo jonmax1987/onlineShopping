@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { UsersService } from '../services/users.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -14,7 +15,7 @@ export class MenueComponent implements OnInit {
   user;
   product_cart;
   change_bill;
-  constructor(private data: ProductService , private usersData: UsersService) { }
+  constructor(private data: ProductService , private usersData: UsersService, private router: Router) { }
 
   ngOnInit() {
     this.usersData.user_as.subscribe((obj) => this.user = (obj));
@@ -50,8 +51,9 @@ export class MenueComponent implements OnInit {
   };
 
   signOut(){
-    // this.usersData.changeUser({ username: 'guest' });
     this.data.cleanUser();
+    this.router.navigate(['/firstpage']);
+
   };
 
 }

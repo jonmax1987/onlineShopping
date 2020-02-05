@@ -106,6 +106,27 @@ router.get('/get_product/:id_category', function (req, res, next) {
     })
 });
 
+
+/* GET sum products  to show exemple*/
+router.get('/sum_product/', function (req, res, next) {
+    let respons = new httpRespons();
+    con.query(`SELECT * FROM sum_product`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'products-list';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
 /* GET product count */
 router.get('/productcount', function (req, res, next) {
     let respons = new httpRespons();
@@ -414,6 +435,29 @@ router.get('/order', function (req, res, next) {
     // console.log('token:', token)
     // cheeckJWT(token)
     con.query(`SELECT COUNT(*) FROM order_`, function (err, result, fields) {
+        if (err) {
+            respons.success = false;
+            respons.errore = true;
+            respons.message = 'errore:' + err;
+            respons.data = null;
+            res.json(respons);
+            return
+        }
+        respons.success = true;
+        respons.errore = false;
+        respons.message = 'order-count';
+        respons.data = result;
+        res.json(respons);
+    })
+});
+
+/* GET order date */
+router.get('/order_date/:token', function (req, res, next) {
+    let respons = new httpRespons();
+    var token = req.query.token;
+    console.log('token:', token)
+    cheeckJWT(token)
+    con.query(`SELECT * FROM order_`, function (err, result, fields) {
         if (err) {
             respons.success = false;
             respons.errore = true;

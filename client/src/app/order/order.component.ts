@@ -26,6 +26,8 @@ export class OrderComponent implements OnInit {
   produc_cart;
   total;
 
+  token;
+
   object = {
     city: '',
     street: '',
@@ -38,6 +40,10 @@ export class OrderComponent implements OnInit {
   constructor(private data: ProductService, private userdata: UsersService, private router: Router) { }
 
   ngOnInit() {
+    this.data.token_as.subscribe((str)=>this.token=str);
+    if(this.token == ''){
+      this.router.navigate(['/firstpage']);
+    };
     this.data.getDataOrder();
     this.userdata.user_as.subscribe((obj) => this.object.city = (obj['city']));
     this.userdata.user_as.subscribe((obj) => this.object.street = (obj['street']));

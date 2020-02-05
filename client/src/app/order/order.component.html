@@ -37,7 +37,8 @@
       <hr>
       <div>Shipping Details</div>
       <hr>
-      <div class="input-group" name="city">
+      <div class="input-group mb-1" name="city">
+        <label for="">Enter  City  :   ...</label>
         <span class="input-group-btn" (dblclick)="dblclick('city')">
           <button class="btn btn-default" type="submit">
             <i class="fas fa-arrow-alt-circle-down"></i>
@@ -45,7 +46,8 @@
         </span>
         <input type="text" class="form-control" name="city" [(ngModel)]='city' />
       </div>
-      <div class="input-group">
+      <div class="input-group mb-1">
+        <label for="">Enter  Street :.</label>
         <span class="input-group-btn" (dblclick)="dblclick('street')">
           <button class="btn btn-default" type="submit">
             <i class="fas fa-arrow-alt-circle-down"></i>
@@ -54,13 +56,14 @@
         <input type="text" class="form-control" name="street" [(ngModel)]='street' (dblclick)="dblclick($event)" />
       </div>
       <h5 class="alert alert-danger" [hidden]='alert'>you need to choose enothr date!!!</h5>
-      <div class="input-group">
+      <div class="input-group mb-1">
+        <label for="">Delivery date</label>
         <span class="input-group-btn" (dblclick)="dblclick('date')">
           <button class="btn btn-default" type="submit">
             <i class="fas fa-arrow-alt-circle-down"></i>
           </button>
         </span>
-        <input type="date" class="form-control" (dblclick)='dblclick(shipping_date)' [(ngModel)]='date' (keyup)="validDate()"/>
+        <input type="date" class="form-control" (dblclick)='dblclick(shipping_date)' [(ngModel)]='date' (change)="validDate()"/>
       </div>
       <p>payments:</p>
       <hr>

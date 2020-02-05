@@ -22,11 +22,14 @@ export class FirstPageComponent implements OnInit {
   resume_shopping_alert;
   start_shopping_alert;
 
+  sum_img=[];
+
   constructor(private router: Router, private data: ProductService) { }
 
   ngOnInit() {
     this.getOrderCount();
     this.getProductCount();
+    this.getImagesToExemple();
     this.data.resume_shopping_as.subscribe((bool) => this.resume_shopping_alert = bool);
     this.data.start_shopping_as.subscribe((bool) => this.start_shopping_alert = bool);
     this.data.message_title_as.subscribe((str) => this.message_title = str);
@@ -34,6 +37,18 @@ export class FirstPageComponent implements OnInit {
     this.data.total_as.subscribe((str) => this.total = str);
     this.data.last_order_as.subscribe((str) => this.last_order = str);
   }
+// lastorder
+  getImagesToExemple() {
+    fetch('http://localhost:3000/product/sum_product')
+    .then((res) => res.json())
+    .then((res) => {
+      this.sum_img = res.data;
+      console.log(this.sum_img);
+    }), (error) => {
+      console.log("error:", error);
+    }
+  };
+
 
   getOrderCount() {
     fetch('http://localhost:3000/product/order')

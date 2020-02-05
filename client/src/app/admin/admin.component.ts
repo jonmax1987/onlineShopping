@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -8,7 +9,7 @@ import { ProductService } from '../services/product.service';
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private data: ProductService) { }
+  constructor(private data: ProductService, private router:Router) { }
 
   product;
   this_product = {};
@@ -20,7 +21,13 @@ export class AdminComponent implements OnInit {
   message;
   alert = true;
 
+  token;
+
   ngOnInit() {
+    this.data.token_as.subscribe((str)=>this.token=str);
+    if(this.token == ''){
+      this.router.navigate(['/firstpage']);
+    };
     this.data.product_as.subscribe((obj) => this.product = obj);
     this.data.admin_product_as.subscribe((obj) => this.name = obj.name);
     this.data.admin_product_as.subscribe((obj) => this.price = obj.price);
