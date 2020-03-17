@@ -16,6 +16,8 @@ var app = express();
 
 app.use(cors())
 
+app.use(express.static('../client/dist/client/'))
+
 app.get('/products/:id', function (req, res, next) {
   res.json({msg: 'This is CORS-enabled for all origins!'})
 })

@@ -108,6 +108,7 @@ export class RegisterComponent implements OnInit {
       })
 
   }
+  
   back() {
     if (!this.step_1) {
       this.step_1 = true;
